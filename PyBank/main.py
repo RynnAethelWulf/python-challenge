@@ -2,7 +2,7 @@ import csv
 import os 
 
 url_in = os.path.join("PyBank","Resources","budget_data.csv")
-url_out = os.path.join("PyBank","Resources","result.txt")
+url_out = os.path.join("PyBank","Analysis","result.txt")
 
 with open(url_in,'r') as data_file:
     data = csv.reader(data_file, delimiter = ',')
