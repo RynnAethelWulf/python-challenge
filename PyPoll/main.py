@@ -2,10 +2,11 @@ import csv
 import os
 
 
-url = os.path.join("PyPoll", "Resources","election_data.csv")
+url_in = os.path.join("PyPoll", "Resources","election_data.csv")
+url_out = os.path.join("PyPoll","Analysis","result.txt")
 
 def read():
-     with open(url,mode='r') as datafile:
+     with open(url_in,mode='r') as datafile:
         data =csv.DictReader(datafile, delimiter=',')
         data_lines = [lines for lines in data]
         Total_votes = len(data_lines)
@@ -19,18 +20,26 @@ def check_data(data,names):
             count += 1
             winner_dict[names] = count
     avg = round(count/Tot_votes*100,2)
-    return lambda name: print(f"{name}: {avg}% ({count})")
+    return lambda name: (f"{name}: {avg}% ({count})\n")
 
 
 
 def display_res():
-    print(f"Total Votes: {Tot_votes}")
+    dec1 = "\n"+("--"*15)+"\n"
+   
+    
+    Results_text = f"Election Results {dec1}"
+    votes = f"Total Votes: {Tot_votes} {dec1}"
+    
     Result_Khan = check_data(get_data,"Khan")("Khan")
     Result_Correy = check_data(get_data,"Correy")("Correy")
-    Result_Correy = check_data(get_data,"Li")("Li")
-    Result_Correy = check_data(get_data,"O'Tooley")("O'Tooley")
+    Result_Li = check_data(get_data,"Li")("Li")
+    Result_Tooley = check_data(get_data,"O'Tooley")("O'Tooley")
     max_key = max(winner_dict, key=winner_dict.get)
-    print(f"Winner: {max_key}")
+    pmax_key = f"Winner: {max_key}{dec1}"
+    text_out = [Results_text,votes,Result_Khan,Result_Correy,Result_Li,Result_Tooley,dec1,pmax_key]
+    with open(url_out,'w') as out_file:
+        out_file.writelines(text_out)
 
 if __name__ == "__main__":
     display_res()
